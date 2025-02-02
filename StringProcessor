@@ -1,0 +1,57 @@
+package sample1;
+
+import java.util.Scanner;
+
+public class StringProcessor {
+
+    public String reverseString(String str) {
+        StringBuilder revans = new StringBuilder(str);
+        return revans.reverse().toString();
+    }
+
+   
+    public int countOccurrences(String text, String sub) {
+        int count = 0;
+        int index = 0;
+        while ((index = text.indexOf(sub, index)) != -1) {
+            count++;
+            index += sub.length();
+        }
+        return count;
+    }
+
+    public String splitAndUppercase(String str) {
+        String[] words = str.split(" ");
+        StringBuilder uppercaseString = new StringBuilder();
+
+        for (String word : words) {            
+                uppercaseString.append(word.toUpperCase()).append(" ");            
+        }
+
+        return uppercaseString.toString().trim();
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        StringProcessor processor = new StringProcessor();
+
+        // Input for all operations
+        System.out.print("Enter a string to process: ");
+        String inputStr = sc.nextLine();
+
+        System.out.println("\n--- String Processor Results ---");
+
+        String reversed = processor.reverseString(inputStr);
+        System.out.println("Reversed String: " + reversed);
+
+        System.out.print("Enter a substring to count in the input string: ");
+        String subStr = sc.nextLine();
+        int occurrences = processor.countOccurrences(inputStr, subStr);
+        System.out.println("Occurrences of \"" + subStr + "\": " + occurrences);
+
+        String uppercaseString = processor.splitAndUppercase(inputStr);
+        System.out.println("Uppercase String: " + uppercaseString);
+
+        sc.close();
+    }
+}
