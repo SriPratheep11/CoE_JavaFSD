@@ -1,0 +1,122 @@
+package sample1;
+
+import java.util.*;
+
+class Task implements Comparable<Task> {
+    private String id;
+    private String description;
+    private int priority;
+
+    public Task(String id, String description, int priority) {
+        this.id = id;
+        this.description = description;
+        this.priority = priority;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    @Override
+    public int compareTo(Task other) {
+        return Integer.compare(other.priority, this.priority); // Higher priority comes first
+    }
+
+    @Override
+    public String toString() {
+        return "Task{ID='" + id + "', Description='" + description + "', Priority=" + priority + "}";
+    }
+}
+
+class TaskManager {
+    private PriorityQueue<Task> taskQueue;
+    private Map<String, Task> taskMap;
+
+    public TaskManager() {
+        taskQueue = new PriorityQueue<>();
+        taskMap = new HashMap<>();
+    }
+
+    public void addTask(String id, String description, int priority) {
+        if (taskMap.containsKey(id)) {
+            System.out.println("Task with ID " + id + " already exists.");
+            return;
+        }
+        Task newTask = new Task(id, description, priority);
+        taskQueue.add(newTask);
+        taskMap.put(id, newTask);
+    }
+
+    public void removeTask(String id) {
+        Task task = taskMap.remove(id);
+        if (task != null) {
+            taskQueue.remove(task);
+            System.out.println("Task " + id + " removed.");
+        } else {
+            System.out.println("Task " + id + " not found.");
+        }
+    }
+
+    public Task getHighestPriorityTask() {
+        return taskQueue.peek();
+    }
+
+    public void displayTasks() {
+        System.out.println("Current Tasks:");
+        for (Task task : taskQueue) {
+            System.out.println(task);
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        TaskManager manager = new TaskManager();
+
+        while (true) {
+        	System.out.println("Welcome to TaskManager");
+        	System.out.println();
+            System.out.println("1. Add Task\n2. Remove Task\n3. View Highest Priority Task\n4. Display All Tasks\n5. Exit");
+            System.out.print("Enter choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Task ID: ");
+                    String id = sc.nextLine();
+                    System.out.print("Enter Task Description: ");
+                    String description = sc.nextLine();
+                    System.out.print("Enter Task Priority: ");
+                    int priority = sc.nextInt();
+                    manager.addTask(id, description, priority);
+                    break;
+                case 2:
+                    System.out.print("Enter Task ID to remove: ");
+                    String removeId = sc.nextLine();
+                    manager.removeTask(removeId);
+                    break;
+                case 3:
+                    Task highest = manager.getHighestPriorityTask();
+                    System.out.println("Highest Priority Task: " + (highest != null ? highest : "No tasks available"));
+                    break;
+                case 4:
+                    manager.displayTasks();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    sc.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        }
+    }
+}
