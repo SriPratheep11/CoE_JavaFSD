@@ -1,0 +1,88 @@
+package sample1;
+
+import java.util.*;
+
+class MatrixMultiplier implements Runnable {
+    private int[][] result;
+    private int[][] matrixA;
+    private int[][] matrixB;
+    private int row;
+
+    public MatrixMultiplier(int[][] result, int[][] matrixA, int[][] matrixB, int row) {
+        this.result = result;
+        this.matrixA = matrixA;
+        this.matrixB = matrixB;
+        this.row = row;
+    }
+
+ 
+    public void run() {
+        int colsB = matrixB[0].length;
+        int colsA = matrixA[0].length;
+        for (int j = 0; j < colsB; j++) {
+            result[row][j] = 0;
+            for (int k = 0; k < colsA; k++) {
+                result[row][j] += matrixA[row][k] * matrixB[k][j];
+            }
+        }
+    }
+}
+
+public class MultithreadedMatrixMultiplication {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.print("Enter number of rows and columns of matrix A: ");
+        int rowsA = sc.nextInt(), colsA = sc.nextInt();
+        int[][] matrixA = new int[rowsA][colsA];
+        
+        System.out.print("Enter number of rows and columns of matrix B: ");
+        int rowsB = sc.nextInt(), colsB = sc.nextInt();
+        
+        if (colsA != rowsB) {
+            System.out.println("Enter valid matrix size: Columns of A must match rows of B.");
+            sc.close();
+            return;
+        }
+        
+        int[][] matrixB = new int[rowsB][colsB];
+        
+        System.out.println("Enter elements of matrix A:");
+        for (int i = 0; i < rowsA; i++) {
+            for (int j = 0; j < colsA; j++) {
+                matrixA[i][j] = sc.nextInt();
+            }
+        }
+        
+        System.out.println("Enter elements of matrix B:");
+        for (int i = 0; i < rowsB; i++) {
+            for (int j = 0; j < colsB; j++) {
+                matrixB[i][j] = sc.nextInt();
+            }
+        }
+        
+        int[][] result = new int[rowsA][colsB];
+        Thread[] threads = new Thread[rowsA];
+        
+        for (int i = 0; i < rowsA; i++) {
+            threads[i] = new Thread(new MatrixMultiplier(result, matrixA, matrixB, i));
+            threads[i].start();
+        }
+        
+        for (int i = 0; i < rowsA; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        System.out.println("Result of the multiplication:");
+        for (int[] row : result) {
+            System.out.println(Arrays.toString(row));
+        }
+        
+        
+    }
+}
+ 
