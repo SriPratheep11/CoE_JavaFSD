@@ -1,0 +1,89 @@
+package sample1;
+import java.io.*;
+import java.util.*;
+
+class UserManager {
+    private List<String> users = new ArrayList<>();
+
+    // Add a user to the system
+    public void addUser(String name, String email) {
+        users.add(name + ", " + email);
+    }
+
+    // Save all user details to a file
+    public void saveUsersToFile(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (String user : users) {
+                writer.write(user);
+                writer.newLine();
+            }
+            System.out.println("Users saved successfully.");
+        } catch (IOException e) {
+            System.out.println("Error saving users: " + e.getMessage());
+        }
+    }
+
+    // Load user details from a file
+    public void loadUsersFromFile(String filename) {
+        users.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                users.add(line);
+            }
+            System.out.println("Users loaded successfully.");
+        } catch (IOException e) {
+            System.out.println("Error loading users: " + e.getMessage());
+        }
+    }
+
+    // Display all users
+    public void displayUsers() {
+        if (users.isEmpty()) {
+            System.out.println("No users found.");
+        } else {
+            System.out.println("User List:");
+            for (String user : users) {
+                System.out.println(user);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        UserManager userManager = new UserManager();
+        String filename = "users.txt";
+
+        while (true) {
+            System.out.println("1. Add User\n2. Save Users to File\n3. Load Users from File\n4. Display Users\n5. Exit");
+            System.out.print("Enter choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter email: ");
+                    String email = sc.nextLine();
+                    userManager.addUser(name, email);
+                    break;
+                case 2:
+                    userManager.saveUsersToFile(filename);
+                    break;
+                case 3:
+                    userManager.loadUsersFromFile(filename);
+                    break;
+                case 4:
+                    userManager.displayUsers();
+                    break;
+                case 5:
+                    System.out.println("Exited");
+                    sc.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        }
+    }
+}
