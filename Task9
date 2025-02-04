@@ -1,0 +1,61 @@
+import java.io.*;
+import java.util.*;
+
+public class LogFileAnalyzer {
+    public static void analyzeLogFile(String inputFile, String outputFile, List<String> keywords) {
+        Map<String, Integer> keywordCount = new HashMap<>();
+        
+        // Initialize keyword count
+        for (String keyword : keywords) {
+            keywordCount.put(keyword, 0);
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            
+            String line;
+            while ((line = reader.readLine()) != null) {
+                for (String keyword : keywords) {
+                    if (line.contains(keyword)) {
+                        keywordCount.put(keyword, keywordCount.get(keyword) + 1);
+                    }
+                }
+            }
+
+            // Write results to output file
+            writer.write("Log File Analysis Report\n");
+            writer.write("========================\n");
+            for (String keyword : keywords) {
+                writer.write(keyword + ": " + keywordCount.get(keyword) + " occurrences\n");
+            }
+            System.out.println("Analysis completed! Results saved to " + outputFile);
+        } catch (IOException e) {
+            System.err.println("Error processing file: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Get input file
+        System.out.print("Enter input log file path: ");
+        String inputFile = sc.nextLine();
+
+        // Get output file
+        System.out.print("Enter output file path: ");
+        String outputFile = sc.nextLine();
+
+        // Get keywords for analysis
+        System.out.print("Enter keywords for analysis (comma-separated): ");
+        String[] keywordsArray = sc.nextLine().split(",");
+        List<String> keywords = new ArrayList<>();
+        for (String keyword : keywordsArray) {
+            keywords.add(keyword.trim());
+        }
+
+        // Run the analysis
+        analyzeLogFile(inputFile, outputFile, keywords);
+        
+        sc.close();
+    }
+}
