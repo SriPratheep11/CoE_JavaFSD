@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NewsNova - Home</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body class="index">
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="images/logo.jpg" alt="Logo">
+      <h1>NewsNova</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#about" id="about-link">About</a></li>
+        <li><a href="#contact" id="contact-link">Contact</a></li>
+        <!-- Login Link (Visible when not logged in) -->
+        <li id="login-li"><a href="#login" id="login-link">Login</a></li>
+        <!-- Username and Logout (Visible after login) -->
+        <li id="user-li" style="display: none;">
+          <span id="username"></span>
+          <button id="logout-button">Logout</button>
+        </li>
+      </ul>
+    </nav>
+    <!-- Search Bar and Filter -->
+    <div class="search-filter">
+      <input type="text" id="search-bar" placeholder="Search news...">
+      <select id="filter">
+        <option value="all">All Categories</option>
+        <option value="sports">Sports</option>
+        <option value="finance">Finance</option>
+        <option value="international">International</option>
+        <option value="local">Local</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Home Section -->
+    <section id="home">
+      <h2>Welcome to NewsNova</h2>
+      <div class="category-grid">
+        <div class="category-card" onclick="window.location.href='sports.html'">
+          <img src="images\s1.jpg" alt="Sports">
+          <h3>Sports</h3>
+        </div>
+        <div class="category-card" onclick="window.location.href='finance.html'">
+          <img src="images\f1.jpg" alt="Finance">
+          <h3>Finance</h3>
+        </div>
+        <div class="category-card" onclick="window.location.href='international.html'">
+          <img src="images\i1.jpeg" alt="International">
+          <h3>International</h3>
+        </div>
+        <div class="category-card" onclick="window.location.href='local.html'">
+          <img src="images\l1.jpg" alt="Local">
+          <h3>Local</h3>
+        </div>
+      </div>
+    </section>
+
+    <!-- Post Button (Visible after login) -->
+    <button id="post-button" style="display: none;">Post News</button>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="social-media">
+      <a href="https://x.com/?lang=en&mx=2"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2F"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.instagram.com/accounts/login/?hl=en"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p>&copy; 2023 NewsNova. All rights reserved.</p>
+  </footer>
+
+  <!-- About Popup -->
+  <div id="about-popup" class="popup">
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <h2>About NewsNova</h2>
+      <p>NewsNova is your platform for the latest news in Sports, Finance, International, and Local categories. Stay updated with our engaging content!. You can also add news in our site by login to the NewsNova!</p>
+    </div>
+  </div>
+
+  <!-- Contact Popup -->
+  <div id="contact-popup" class="popup">
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <h2>Contact Us</h2>
+      <div class="contact-details">
+        <div class="contact-item">
+          <i class="fas fa-user"></i>
+          <p><strong>Name:</strong> Sri Prathep S</p>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <p><strong>Email:</strong> sripratheep@gmail.com</p>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <p><strong>Phone:</strong> 211421104259</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Popup -->
+  <div id="login-popup" class="popup">
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <h2>Login</h2>
+      <form id="login-form">
+        <input type="text" id="login-username" placeholder="Username" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <p id="login-error" style="color: red; display: none;">Invalid username or password.</p>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Post Popup -->
+  <div id="post-popup" class="popup">
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <h2>Post News</h2>
+      <form id="post-form">
+        <label for="post-category">Category:</label>
+        <select id="post-category">
+          <option value="sports">Sports</option>
+          <option value="finance">Finance</option>
+          <option value="international">International</option>
+          <option value="local">Local</option>
+        </select>
+        <label for="post-title">News Title:</label>
+        <input type="text" id="post-title" placeholder="Enter news title" required>
+        <label for="post-content">News Content:</label>
+        <textarea id="post-content" placeholder="Write your news here..." required></textarea>
+        <label for="post-media">Upload Image/Video:</label>
+        <input type="file" id="post-media" accept="image/*, video/*" required>
+        <button type="submit" id="post-submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>

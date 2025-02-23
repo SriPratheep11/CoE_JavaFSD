@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NewsNova - Finance</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="finance">
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="images\logo.jpg" alt="Logo">
+      <h1>NewsNova - Finance</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="sports.html">Sports</a></li>
+        <li><a href="finance.html">Finance</a></li>
+        <li><a href="international.html">International</a></li>
+        <li><a href="local.html">Local</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section id="finance">
+      <h2>Finance News</h2>
+      <div class="news-grid">
+        <!-- Preexisting News -->
+        <div class="news-box">
+          <h3>Stock Market Hits All-Time High</h3>
+          <p>The stock market reached a new all-time high, driven by strong earnings reports from tech companies. Investors are optimistic about future growth.</p>
+          <img src="images/stock.jpg" alt="Stock Market">
+        </div>
+        <div class="news-box">
+          <h3>Cryptocurrency Volatility</h3>
+          <p>Bitcoin and other cryptocurrencies experienced significant volatility this week, with prices swinging wildly. Analysts advise caution for investors.</p>
+          <img src="images/crypto.jpeg" alt="Cryptocurrency">
+        </div>
+        <div class="news-box">
+          <h3>Interest Rates Raised</h3>
+          <p>The central bank raised interest rates to combat inflation. This move is expected to slow down economic growth but stabilize prices.</p>
+          <img src="images/ir.jpeg" alt="Interest Rates">
+        </div>
+        <div class="news-box">
+          <h3>New Tax Reforms Announced</h3>
+          <p>The government announced new tax reforms aimed at simplifying the tax code and reducing the burden on middle-income families.</p>
+          <img src="images/tax.jpg" alt="Tax Reforms">
+        </div>
+
+        <!-- Dynamically Loaded News -->
+        <div id="dynamic-news"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="social-media">
+      <a href="https://x.com/?lang=en&mx=2"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2F"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.instagram.com/accounts/login/?hl=en"><i class="fab fa-instagram"></i></a>
+    </div>
+    <p>&copy; 2023 E-Magazine. All rights reserved.</p>
+  </footer>
+
+  <script>
+   function loadDynamicNews() {
+  const dynamicNewsContainer = document.getElementById('dynamic-news');
+  const category = window.location.pathname.split('/').pop().split('.')[0]; // Get category from the page name
+  const categoryNews = JSON.parse(localStorage.getItem(category)) || [];
+
+  categoryNews.forEach(news => {
+    const newsBox = document.createElement('div');
+    newsBox.className = 'news-box';
+    newsBox.innerHTML = `
+      <h3>${news.title}</h3>
+      <p>${news.content}</p>
+      <img src="${news.media}" alt="${news.title}">
+      <button class="delete-button" data-id="${news.id}">Delete</button>
+    `;
+    dynamicNewsContainer.appendChild(newsBox);
+  });
+
+  // Add event listeners to delete buttons
+  const deleteButtons = document.querySelectorAll('.delete-button');
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      const newsId = button.getAttribute('data-id');
+      deleteNewsItem(category, newsId);
+    });
+  });
+}
+
+// Function to delete a news item
+function deleteNewsItem(category, newsId) {
+  let categoryNews = JSON.parse(localStorage.getItem(category)) || [];
+
+  // Filter out the news item with the matching ID
+  categoryNews = categoryNews.filter(news => news.id !== Number(newsId));
+
+  // Update localStorage
+  localStorage.setItem(category, JSON.stringify(categoryNews));
+
+  // Reload the page to reflect the changes
+  window.location.reload();
+}
+
+// Load dynamic news when the page loads
+window.onload = loadDynamicNews;
+  </script>
+</body>
+</html>
