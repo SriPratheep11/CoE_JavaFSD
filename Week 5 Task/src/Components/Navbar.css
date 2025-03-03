@@ -1,0 +1,22 @@
+.navbar {
+    background: #abebe7;
+    color: rgb(241, 83, 83);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .nav-links a, .nav-links button {
+    color: rgb(219, 102, 122);
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 20px;
+    
+  }
+  
+  .nav-links button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
