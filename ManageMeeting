@@ -1,0 +1,109 @@
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+
+enum RoomFeature {
+    PROJECTOR,
+    VIDEO_CONFERENCING,
+    WHITEBOARD,
+    CONFERENCE_PHONE,
+    AIR_CONDITIONING
+}
+
+class RoomBookingException extends Exception {
+    public RoomBookingException(String message) {
+        super(message);
+    }
+}
+
+class MeetingRoom {
+    private String roomId;
+    private String roomName;
+    private int capacity;
+    private EnumSet<RoomFeature> features;
+
+    public MeetingRoom(String roomId, String roomName, int capacity, EnumSet<RoomFeature> features) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.capacity = capacity;
+        this.features = features;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public EnumSet<RoomFeature> getFeatures() {
+        return features;
+    }
+
+    @Override
+    public String toString() {
+        return roomName;
+    }
+
+    public boolean hasRequiredFeatures(EnumSet<RoomFeature> requiredFeatures) {
+        return features.containsAll(requiredFeatures);
+    }
+}
+
+class RoomScheduler {
+    private Map<String, MeetingRoom> meetingRooms;
+
+    public RoomScheduler() {
+        this.meetingRooms = new HashMap<>();
+    }
+
+    public void addMeetingRoom(MeetingRoom room) {
+        if (room != null && !meetingRooms.containsKey(room.getRoomId())) {
+            meetingRooms.put(room.getRoomId(), room);
+            System.out.println("Room added: " + room.getRoomName() + ", ID: " + room.getRoomId());
+        }
+    }
+
+    public void bookRoom(String roomId, EnumSet<RoomFeature> requiredFeatures) throws RoomBookingException {
+        MeetingRoom room = meetingRooms.get(roomId);
+        if (room == null) {
+            throw new RoomBookingException("Room " + roomId + " not found.");
+        }
+        if (room.hasRequiredFeatures(requiredFeatures)) {
+            System.out.println("Room " + roomId + " booked successfully.");
+        } else {
+            throw new RoomBookingException("Room " + roomId + " does not meet the required features.");
+        }
+    }
+
+    public List<String> listAvailableRooms(EnumSet<RoomFeature> requiredFeatures) {
+        List<String> availableRooms = new ArrayList<>();
+        for (MeetingRoom room : meetingRooms.values()) {
+            if (room.hasRequiredFeatures(requiredFeatures)) {
+                availableRooms.add(room.getRoomName());
+            }
+        }
+        return availableRooms;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        RoomScheduler scheduler = new RoomScheduler();
+
+        scheduler.addMeetingRoom(new MeetingRoom("001", "Boardroom", 20, EnumSet.of(RoomFeature.PROJECTOR, RoomFeature.CONFERENCE_PHONE, RoomFeature.AIR_CONDITIONING)));
+        scheduler.addMeetingRoom(new MeetingRoom("002", "Strategy Room", 10, EnumSet.of(RoomFeature.WHITEBOARD, RoomFeature.AIR_CONDITIONING)));
+
+        try {
+            scheduler.bookRoom("001", EnumSet.of(RoomFeature.PROJECTOR, RoomFeature.CONFERENCE_PHONE));
+        } catch (RoomBookingException e) {
+            System.out.println(e.getMessage());
+        }
+
+        List<String> availableRooms = scheduler.listAvailableRooms(EnumSet.of(RoomFeature.AIR_CONDITIONING));
+        System.out.println("Available rooms with AIR_CONDITIONING: " + availableRooms);
+    }
+}
